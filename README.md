@@ -1,7 +1,7 @@
-# SentraPay 💰💳
+# Sentra 💰💳
 ![alt text](https://github.com/user-attachments/assets/8ba32535-0d1f-4a96-a0ae-27a0ce0dd57a)
 
-SentraPay adalah platform manajemen keuangan komprehensif yang dibangun dengan Go yang menyediakan otentikasi pengguna, manajemen anggaran, verifikasi identitas, dan kemampuan dompet digital.
+Sentra adalah platform manajemen keuangan komprehensif yang dibangun dengan Go yang menyediakan otentikasi pengguna, manajemen anggaran, verifikasi identitas, dan kemampuan dompet digital.
 
 ## Tim Pengembang ✨
 
