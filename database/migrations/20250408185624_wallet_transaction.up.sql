@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS wallet_transactions (
-                                                   id VARCHAR(50) PRIMARY KEY,
+id VARCHAR(50) PRIMARY KEY,
     user_id VARCHAR(50) NOT NULL,
     amount DECIMAL(15, 2) NOT NULL,
     type VARCHAR(20) NOT NULL,

@@ -45,9 +45,7 @@ func (r *repository) NewClient(tx bool) (Client, error) {
 	}
 
 	return Client{
-		Users: &userRepository{q: db, log: r.log},
-		//Sessions:  &sessionRepository{q: db},
-		//UserOauth: &userOauthRepository{q: db},
+		Users:    &userRepository{q: db, log: r.log},
 		Commit:   commitFunc,
 		Rollback: rollbackFunc,
 	}, nil
@@ -65,6 +63,7 @@ type Client struct {
 		DeleteUser(ctx context.Context, id string) error
 		EnableTouchID(ctx context.Context, id string, hash string) error
 		UpdateProfilePhoto(ctx context.Context, id string, photoURL string) error
+		UpdateFacePhoto(ctx context.Context, id string, facePhotoURL string) error
 	}
 
 	Commit   func() error

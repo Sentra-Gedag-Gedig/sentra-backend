@@ -267,3 +267,38 @@ func (h *AuthHandler) HandleGetProfilePhoto(ctx *fiber.Ctx) error {
 		return errHandler.HandleSuccess(ctx, fiber.StatusOK, result)
 	}
 }
+
+func (h *AuthHandler) HandleUpdateFacePhoto(ctx *fiber.Ctx) error {
+	requestID := h.middleware.GetRequestID(ctx)
+	c, cancel := context.WithTimeout(contextPkg.FromFiberCtx(ctx), 30*time.Second)
+	defer cancel()
+
+	errHandler := handlerUtil.New(h.log)
+
+	h.log.WithFields(log.Fields{
+		"request_id": requestID,
+		"path":       ctx.Path(),
+	}).Debug("Processing update face photo request")
+
+	userData, err := jwtPkg.GetUserLoginData(ctx)
+	if err != nil {
+		return errHandler.HandleUnauthorized(ctx, requestID, "Unauthorized")
+	}
+
+	file, err := ctx.FormFile("photo")
+	if err != nil {
+		return errHandler.Handle(ctx, requestID, err, ctx.Path(), "get_form_file")
+	}
+
+	err = h.authService.User().UpdateFacePhoto(c, userData.ID, file)
+	if err != nil {
+		return errHandler.Handle(ctx, requestID, err, ctx.Path(), "update_face_photo")
+	}
+
+	select {
+	case <-c.Done():
+		return errHandler.HandleRequestTimeout(ctx)
+	default:
+		return errHandler.HandleSuccess(ctx, fiber.StatusOK, nil)
+	}
+}

@@ -10,7 +10,7 @@ SELECT id, email, name, national_identity_number, birth_place, birth_date, gende
        address, neighborhood_community_unit, village, district, religion, 
        marital_status, profession, citizenship, card_valid_until, password, 
        phone_number, personal_identification_number, enable_touch_id, hash_touch_id, 
-       profile_photo_url, is_verified, created_at, updated_at
+       profile_photo_url, is_verified, created_at, updated_at, face_photo_url
 FROM Users
     WHERE id = :id`
 
@@ -20,7 +20,7 @@ FROM Users
     WHERE phone_number = :phone_number`
 
 	queryGetByEmail = `
-SELECT id, email, name, national_identity_number, birth_place, birth_date, gender, address, neighborhood_community_unit, village, district, religion, marital_status, profession, citizenship, card_valid_until, password, phone_number, personal_identification_number, enable_touch_id, hash_touch_id, is_verified, created_at, updated_at
+SELECT id, email, name, national_identity_number, birth_place, birth_date, gender, address, neighborhood_community_unit, village, district, religion, marital_status, profession, citizenship, card_valid_until, password, phone_number, personal_identification_number, enable_touch_id, hash_touch_id, is_verified, face_photo_url, profile_photo_url, created_at, updated_at
 FROM Users
     WHERE email = :email`
 
@@ -71,6 +71,12 @@ WHERE phone_number = :phone_number`
 	queryUpdateProfilePhoto = `
 		UPDATE Users
 		SET profile_photo_url = :profile_photo_url,
+			updated_at = :updated_at
+		WHERE id = :id`
+
+	queryUpdateFacePhoto = `
+		UPDATE Users
+		SET face_photo_url = :face_photo_url,
 			updated_at = :updated_at
 		WHERE id = :id`
 )

@@ -25,6 +25,7 @@ type User struct {
 	EnableTouchID                bool      `db:"enable_touch_id"`
 	HashTouchID                  string    `db:"hash_touch_id"`
 	ProfilePhotoURL              string    `db:"profile_photo_url"`
+	FacePhotoURL                 string    `db:"face_photo_url"`
 	IsVerified                   bool      `db:"is_verified"`
 	CreatedAt                    time.Time `db:"created_at"`
 	UpdatedAt                    time.Time `db:"updated_at"`

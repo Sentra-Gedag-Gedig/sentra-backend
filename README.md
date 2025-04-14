@@ -1,21 +1,17 @@
 
 ```
 sentra-be
-├─ .idea
-│  ├─ .name
-│  ├─ StarterProjectGolang.iml
-│  ├─ TSDN.iml
-│  ├─ modules.xml
-│  ├─ vcs.xml
-│  └─ workspace.xml
+├─ .dockerignore
 ├─ Dockerfile
 ├─ LICENSE
 ├─ Makefile
+├─ README.md
 ├─ bin
 │  └─ start
 ├─ cmd
 │  └─ app
 │     └─ main.go
+├─ coverage.html
 ├─ database
 │  ├─ migrations
 │  │  ├─ 20250104035256_user.down.sql
@@ -103,24 +99,30 @@ sentra-be
 │  │  ├─ session.go
 │  │  ├─ user.go
 │  │  └─ whatsapp.go
-│  └─ middleware
-│     ├─ logging.go
-│     ├─ middleware.go
-│     ├─ rate_limitter.go
-│     ├─ request_id.go
-│     └─ token.go
-├─ log.txt
+│  ├─ middleware
+│  │  ├─ logging.go
+│  │  ├─ middleware.go
+│  │  ├─ rate_limitter.go
+│  │  ├─ request_id.go
+│  │  └─ token.go
+│  └─ mocks
+│     ├─ redis_mock.go
+│     ├─ s3_mock.go
+│     ├─ smtp_mock.go
+│     ├─ websocket_mock.go
+│     └─ whatsapp_mock.go
 ├─ nginx
 │  ├─ conf.d
 │  │  └─ default.conf
 │  ├─ logs
 │  └─ ssl
-├─ pkcs8.key
 ├─ pkg
 │  ├─ bcrypt
-│  │  └─ bcrypt.go
+│  │  ├─ bcrypt.go
+│  │  └─ bcrypt_test.go
 │  ├─ context
-│  │  └─ context.go
+│  │  ├─ context.go
+│  │  └─ context_test.go
 │  ├─ doku
 │  │  └─ doku.go
 │  ├─ gemini
@@ -128,32 +130,38 @@ sentra-be
 │  ├─ google
 │  │  └─ google.go
 │  ├─ handlerUtil
-│  │  └─ handler_util.go
+│  │  ├─ handler_util.go
+│  │  └─ handler_util_test.go
 │  ├─ jwt
+│  │  ├─ jwt_test.go
 │  │  └─ token.go
 │  ├─ log
-│  │  └─ log.go
+│  │  ├─ log.go
+│  │  └─ log_test.go
 │  ├─ redis
-│  │  └─ redis.go
+│  │  ├─ redis.go
+│  │  └─ redis_test.go
 │  ├─ response
-│  │  └─ response.go
+│  │  ├─ response.go
+│  │  └─ response_test.go
 │  ├─ s3
-│  │  └─ s3.go
+│  │  ├─ s3.go
+│  │  └─ s3_test.go
 │  ├─ smtp
-│  │  └─ smtp.go
+│  │  ├─ smtp.go
+│  │  └─ smtp_test.go
 │  ├─ utils
-│  │  └─ utils.go
+│  │  ├─ utils.go
+│  │  └─ utils_test.go
 │  ├─ websocket
-│  │  └─ websocket.go
+│  │  ├─ websocket.go
+│  │  └─ websocket_test.go
 │  └─ whatsapp
-│     └─ whatsapp.go
-├─ public.pem
-└─ storage
-   └─ logs
-      ├─ app-2025-04-07.log
-      ├─ app-2025-04-08.log
-      ├─ app-2025-04-09.log
-      ├─ app-2025-04-10.log
-      └─ app-2025-04-11.log
+│     ├─ whatsapp.go
+│     └─ whatsapp_test.go
+├─ storage
+│  └─ logs
+└─ tmp
+   └─ main
 
 ```

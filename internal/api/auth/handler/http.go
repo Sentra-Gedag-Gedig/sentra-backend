@@ -50,12 +50,12 @@ func (h *AuthHandler) Start(srv fiber.Router) {
 
 	users := srv.Group("/users")
 	users.Post("/", h.HandleRegister)
+	users.Post("/profile-photo", h.middleware.NewTokenMiddleware, h.HandleUpdateProfilePhoto)
+	users.Post("/face-photo", h.middleware.NewTokenMiddleware, h.HandleUpdateFacePhoto)
+	users.Get("/profile-photo", h.middleware.NewTokenMiddleware, h.HandleGetProfilePhoto)
 	users.Get("/:id", h.middleware.NewTokenMiddleware, h.HandleGetUserById)
 	users.Patch("/", h.middleware.NewTokenMiddleware, h.HandleUpdateUser)
 	users.Delete("/:id", h.HandleDeleteUser)
-
-	users.Post("/profile-photo", h.middleware.NewTokenMiddleware, h.HandleUpdateProfilePhoto)
-	users.Get("/profile-photo", h.middleware.NewTokenMiddleware, h.HandleGetProfilePhoto)
 
 	password := srv.Group("/password")
 	password.Patch("/reset-password", h.HandleResetPassword)

@@ -3,17 +3,11 @@ package middleware
 import (
 	"ProjectGolang/internal/entity"
 	jwtPkg "ProjectGolang/pkg/jwt"
-	"ProjectGolang/pkg/response"
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/sirupsen/logrus"
-	"net/http"
 	"reflect"
 	"strings"
-)
-
-var (
-	ErrUnauthorized = response.NewError(http.StatusUnauthorized, "unauthorized, access token invalid or expired")
 )
 
 const (
@@ -36,11 +30,15 @@ func (m *middleware) NewTokenMiddleware(ctx *fiber.Ctx) error {
 		"method":    ctx.Method(),
 		"client_ip": clientIP,
 		"headers":   ctx.GetReqHeaders(),
-	}).Info("Incoming request")
+	}).Warn("Incoming request")
 
 	if authHeader == "" {
-		m.log.Error("No Authorization header present")
-		return ErrUnauthorized
+		m.log.WithFields(logrus.Fields{
+			"error": "Authorization header is missing",
+		}).Warn("Authorization header check")
+		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error": "Unauthorized, access token invalid or expired",
+		})
 	}
 
 	headerParts := strings.Split(authHeader, " ")
@@ -50,20 +48,32 @@ func (m *middleware) NewTokenMiddleware(ctx *fiber.Ctx) error {
 	}).Debug("Authorization header check")
 
 	if !strings.HasPrefix(authHeader, "Bearer ") {
-		m.log.Error("Invalid Authorization format - must start with 'Bearer '")
-		return ErrUnauthorized
+		m.log.WithFields(logrus.Fields{
+			"error": "Authorization header format is invalid",
+		}).Warn("Authorization header check")
+		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error": "Unauthorized, access token invalid or expired",
+		})
 	}
 
 	userToken, err := jwtPkg.VerifyTokenHeader(ctx, AccessTokenSecret)
 	if err != nil {
-		m.log.WithError(err).Error("Token verification failed")
-		return ErrUnauthorized
+		m.log.WithFields(logrus.Fields{
+			"error": err.Error(),
+		}).Warn("Token verification failed")
+		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error": "Unauthorized, access token invalid or expired",
+		})
 	}
 
 	claims, ok := userToken.Claims.(jwt.MapClaims)
 	if !ok {
-		m.log.Error("Could not extract token claims")
-		return ErrUnauthorized
+		m.log.WithFields(logrus.Fields{
+			"error": "Invalid token claims",
+		}).Warn("Token claims check")
+		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error": "Unauthorized, access token invalid or expired",
+		})
 	}
 
 	m.log.WithFields(logrus.Fields{
@@ -72,6 +82,15 @@ func (m *middleware) NewTokenMiddleware(ctx *fiber.Ctx) error {
 		"id_exists":    claims["id"] != nil,
 		"email_exists": claims["email"] != nil,
 	}).Debug("Token claims")
+
+	if claims["id"] == nil || claims["email"] == nil || claims["username"] == nil {
+		m.log.WithFields(logrus.Fields{
+			"error": "Token claims are missing required fields",
+		}).Warn("Token claims check")
+		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error": "Unauthorized, access token invalid or expired",
+		})
+	}
 
 	user := entity.UserLoginData{
 		ID:       claims["id"].(string),

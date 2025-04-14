@@ -7,9 +7,20 @@ import (
 )
 
 func GetUserDifferenceData(DbUser entity.User, NewUser auth.UpdateUserRequest) (entity.User, error) {
-	var result entity.User
-	result.ID = DbUser.ID
+	// Start with a copy of all existing user data
+	result := DbUser
 
+	birthDate, err := time.Parse("2006-01-02", NewUser.BirthDate)
+	if err != nil {
+		return entity.User{}, err
+	}
+
+	cardValidUntil, err := time.Parse("2006-01-02", NewUser.CardValidUntil)
+	if err != nil {
+		return entity.User{}, err
+	}
+
+	// Then only override the fields that changed
 	if NewUser.Name != "" && NewUser.Name != DbUser.Name {
 		result.Name = NewUser.Name
 	}
@@ -51,8 +62,9 @@ func GetUserDifferenceData(DbUser entity.User, NewUser auth.UpdateUserRequest) (
 	}
 
 	zeroTime := time.Time{}
-	if NewUser.CardValidUntil != zeroTime && NewUser.CardValidUntil != DbUser.CardValidUntil {
-		result.CardValidUntil = NewUser.CardValidUntil
+
+	if cardValidUntil != zeroTime && cardValidUntil != DbUser.CardValidUntil {
+		result.CardValidUntil = cardValidUntil
 	}
 
 	if NewUser.Citizenship != "" && NewUser.Citizenship != DbUser.Citizenship {
@@ -63,9 +75,12 @@ func GetUserDifferenceData(DbUser entity.User, NewUser auth.UpdateUserRequest) (
 		result.NeighborhoodCommunityUnit = NewUser.NeighborhoodCommunityUnit
 	}
 
-	if NewUser.BirthDate != zeroTime && NewUser.BirthDate != DbUser.BirthDate {
-		result.BirthDate = NewUser.BirthDate
+	if birthDate != zeroTime && birthDate != DbUser.BirthDate {
+		result.BirthDate = birthDate
 	}
+
+	// Make sure we preserve the IsVerified status
+	result.IsVerified = DbUser.IsVerified
 
 	return result, nil
 }

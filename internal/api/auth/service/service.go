@@ -32,6 +32,7 @@ type UserDomain interface {
 	UpdateUserVerifiedStatusAndPIN(ctx context.Context, user auth.VerifyUserUsingOTP) error
 	DeleteUser(c context.Context, id string) error
 	UpdateProfilePhoto(c context.Context, userID string, photoFile *multipart.FileHeader) (*auth.ProfilePhotoResponse, error)
+	UpdateFacePhoto(ctx context.Context, userID string, facePhotoFile *multipart.FileHeader) error
 }
 
 type AuthDomain interface {

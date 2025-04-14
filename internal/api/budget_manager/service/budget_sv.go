@@ -166,16 +166,18 @@ func (s *budgetService) GetTransactionsByUserID(ctx context.Context, userID stri
 	}
 
 	for i, transaction := range transactions {
-		audiolink, err := s.s3.PresignUrl(transaction.AudioLink)
-		if err != nil {
-			s.log.WithFields(logrus.Fields{
-				"request_id": requestID,
-				"error":      err.Error(),
-			}).Error("Failed to presign audio link")
-			return nil, err
+		if transaction.AudioLink != "" {
+			audiolink, err := s.s3.PresignUrl(transaction.AudioLink)
+			if err != nil {
+				s.log.WithFields(logrus.Fields{
+					"request_id": requestID,
+					"error":      err.Error(),
+				}).Error("Failed to presign audio link")
+				return nil, err
+			}
+			transactions[i].AudioLink = audiolink
+			fmt.Println("Audio link presigned:", transactions[i].AudioLink)
 		}
-		transactions[i].AudioLink = audiolink
-		fmt.Println("Audio link presigned:", transactions[i].AudioLink)
 	}
 
 	return transactions, nil
@@ -192,7 +194,6 @@ func (s *budgetService) GetTransactionsByPeriod(ctx context.Context, userID stri
 		}).Error("Failed to create new client")
 		return nil, err
 	}
-
 	if period != "all" && period != "week" && period != "month" {
 		s.log.WithFields(logrus.Fields{
 			"request_id": requestID,

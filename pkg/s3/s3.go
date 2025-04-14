@@ -48,8 +48,6 @@ func (s *s3Client) UploadFile(file *multipart.FileHeader) (string, error) {
 		return "", err
 	}
 
-	fmt.Println("Unique file name:", uniqueFileName)
-
 	src, err := file.Open()
 	if err != nil {
 		return "", err
@@ -80,6 +78,14 @@ func (s *s3Client) PresignUrl(fileUrl string) (string, error) {
 	decodedKey, err := url.QueryUnescape(key)
 	if err != nil {
 		return "", fmt.Errorf("failed to decode S3 key: %w", err)
+	}
+
+	_, err = s.client.HeadObject(&s3.HeadObjectInput{
+		Bucket: aws.String(s.bucketName),
+		Key:    aws.String(decodedKey),
+	})
+	if err != nil {
+		return "", fmt.Errorf("file does not exist: %w", err)
 	}
 
 	req, _ := s.client.GetObjectRequest(&s3.GetObjectInput{

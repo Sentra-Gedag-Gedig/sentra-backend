@@ -45,7 +45,9 @@ func (m *middleware) NewRateLimiter(ctx *fiber.Ctx) error {
 
 	if !limiter.Allow() {
 		m.log.Warnf("too many requests for IP %s", clientIP)
-		return ErrTooManyRequests
+		return ctx.Status(fiber.StatusTooManyRequests).JSON(fiber.Map{
+			"error": "Too many requests",
+		})
 	}
 
 	return ctx.Next()

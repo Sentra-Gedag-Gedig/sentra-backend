@@ -36,6 +36,7 @@ type UserDB struct {
 	EnableTouchID                bool           `db:"enable_touch_id"`
 	HashTouchID                  sql.NullString `db:"hash_touch_id"`
 	ProfilePhotoURL              sql.NullString `db:"profile_photo_url"`
+	FacePhotoURL                 sql.NullString `db:"face_photo_url"`
 	IsVerified                   bool           `db:"is_verified"`
 	CreatedAt                    sql.NullTime   `db:"created_at"`
 	UpdatedAt                    sql.NullTime   `db:"updated_at"`
@@ -449,6 +450,43 @@ func (r *userRepository) UpdateProfilePhoto(ctx context.Context, id string, phot
 			"request_id": requestID,
 			"error":      err.Error(),
 		}).Error("UpdateProfilePhoto execution err")
+		return err
+	}
+
+	return nil
+}
+
+func (r *userRepository) UpdateFacePhoto(ctx context.Context, id string, facePhotoURL string) error {
+	requestID := contextPkg.GetRequestID(ctx)
+	argsKV := map[string]interface{}{
+		"id":             id,
+		"face_photo_url": facePhotoURL,
+		"updated_at":     time.Now(),
+	}
+
+	query, args, err := sqlx.Named(queryUpdateFacePhoto, argsKV)
+	if err != nil {
+		r.log.WithFields(logrus.Fields{
+			"request_id": requestID,
+			"error":      err.Error(),
+		}).Error("UpdateFacePhoto named query preparation err")
+		return err
+	}
+
+	query = r.q.Rebind(query)
+
+	if _, err := r.q.ExecContext(ctx, query, args...); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			r.log.WithFields(logrus.Fields{
+				"request_id": requestID,
+				"error":      err.Error(),
+			}).Warn("UpdateFacePhoto no rows found")
+			return auth.ErrUserNotFound
+		}
+		r.log.WithFields(logrus.Fields{
+			"request_id": requestID,
+			"error":      err.Error(),
+		}).Error("UpdateFacePhoto execution err")
 		return err
 	}
 

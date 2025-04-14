@@ -367,3 +367,117 @@ func (s *userDomainImpl) UpdateProfilePhoto(ctx context.Context, userID string, 
 		ProfilePhotoURL: uploadedFileURL,
 	}, nil
 }
+
+func (s *userDomainImpl) UpdateFacePhoto(ctx context.Context, userID string, facePhotoFile *multipart.FileHeader) error {
+	requestID := contextPkg.GetRequestID(ctx)
+
+	if facePhotoFile == nil {
+		s.log.WithFields(logrus.Fields{
+			"request_id": requestID,
+			"user_id":    userID,
+		}).Warn("No file provided")
+		return auth.ErrInvalidFileType
+	}
+
+	if facePhotoFile.Size > 5*1024*1024 {
+		s.log.WithFields(logrus.Fields{
+			"request_id": requestID,
+			"user_id":    userID,
+			"file_size":  facePhotoFile.Size,
+		}).Warn("File too large")
+		return auth.ErrFileTooLarge
+	}
+
+	contentType := facePhotoFile.Header.Get("Content-Type")
+	if !strings.HasPrefix(contentType, "image/") {
+		s.log.WithFields(logrus.Fields{
+			"request_id":   requestID,
+			"user_id":      userID,
+			"content_type": contentType,
+		}).Warn("Invalid file type")
+		return auth.ErrInvalidFileType
+	}
+
+	repo, err := s.repo.NewClient(false)
+	if err != nil {
+		s.log.WithFields(logrus.Fields{
+			"request_id": requestID,
+			"error":      err.Error(),
+		}).Error("Failed to create repository client")
+		return err
+	}
+
+	userData, err := repo.Users.GetByID(ctx, userID)
+	if err != nil {
+		if errors.Is(err, auth.ErrUserNotFound) {
+			s.log.WithFields(logrus.Fields{
+				"request_id": requestID,
+				"user_id":    userID,
+				"error":      err.Error(),
+			}).Warn("User not found")
+			return auth.ErrUserNotFound
+		}
+
+		s.log.WithFields(logrus.Fields{
+			"request_id": requestID,
+			"user_id":    userID,
+			"error":      err.Error(),
+		}).Error("Failed to get user by ID")
+		return err
+	}
+
+	uploadedFileURL, err := s.s3Client.UploadFile(facePhotoFile)
+	if err != nil {
+		s.log.WithFields(logrus.Fields{
+			"request_id": requestID,
+			"user_id":    userID,
+			"error":      err.Error(),
+		}).Error("Failed to upload file to S3")
+		return auth.ErrFailedToUploadFile
+	}
+
+	if userData.FacePhotoURL != "" {
+		oldPhotoURL := userData.FacePhotoURL
+		parts := strings.Split(oldPhotoURL, "/")
+		if len(parts) > 0 {
+			fileName := parts[len(parts)-1]
+			go func() {
+				if err := s.s3Client.DeleteFile(fileName); err != nil {
+					s.log.WithFields(logrus.Fields{
+						"request_id": requestID,
+						"user_id":    userID,
+						"file_name":  fileName,
+						"error":      err.Error(),
+					}).Warn("Failed to delete old face photo")
+				}
+			}()
+		}
+	}
+
+	if err := repo.Users.UpdateFacePhoto(ctx, userID, uploadedFileURL); err != nil {
+		s.log.WithFields(logrus.Fields{
+			"request_id": requestID,
+			"user_id":    userID,
+			"error":      err.Error(),
+		}).Error("Failed to update face photo URL in database")
+		parts := strings.Split(uploadedFileURL, "/")
+		if len(parts) > 0 {
+			fileName := parts[len(parts)-1]
+			if err := s.s3Client.DeleteFile(fileName); err != nil {
+				s.log.WithFields(logrus.Fields{
+					"request_id": requestID,
+					"user_id":    userID,
+					"file_name":  fileName,
+					"error":      err.Error(),
+				}).Warn("Failed to delete uploaded file after database update failure")
+			}
+		}
+
+		return err
+	}
+	s.log.WithFields(logrus.Fields{
+		"request_id": requestID,
+		"user_id":    userID,
+	}).Info("Successfully updated face photo URL in database")
+	return nil
+}

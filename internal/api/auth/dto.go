@@ -91,20 +91,20 @@ type LoginUserResponse struct {
 }
 
 type UpdateUserRequest struct {
-	Name                      string    `db:"name"`
-	NationalIdentityNumber    string    `db:"national_identity_number"`
-	BirthPlace                string    `db:"birth_place"`
-	BirthDate                 time.Time `db:"birth_date"`
-	Gender                    string    `db:"gender"`
-	Address                   string    `db:"address"`
-	NeighborhoodCommunityUnit string    `db:"neighborhood_community_unit"`
-	Village                   string    `db:"village"`
-	District                  string    `db:"district"`
-	Religion                  string    `db:"religion"`
-	MaritalStatus             string    `db:"marital_status"`
-	Profession                string    `db:"profession"`
-	Citizenship               string    `db:"citizenship"`
-	CardValidUntil            time.Time `db:"card_valid_until"`
+	Name                      string `json:"name"`
+	NationalIdentityNumber    string `json:"national_identity_number"`
+	BirthPlace                string `json:"birth_place"`
+	BirthDate                 string `json:"birth_date"`
+	Gender                    string `json:"gender"`
+	Address                   string `json:"address"`
+	NeighborhoodCommunityUnit string `json:"neighborhood_community_unit"`
+	Village                   string `json:"village"`
+	District                  string `json:"district"`
+	Religion                  string `json:"religion"`
+	MaritalStatus             string `json:"marital_status"`
+	Profession                string `json:"profession"`
+	Citizenship               string `json:"citizenship"`
+	CardValidUntil            string `json:"card_valid_until"`
 }
 
 type UpdateUserPINRequest struct {

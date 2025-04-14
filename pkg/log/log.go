@@ -125,7 +125,6 @@ func Fatal(fields Fields, msg string) {
 	}
 	logger.WithFields(fields).Fatal(msg)
 }
-
 func Panic(fields Fields, msg string) {
 	if fields == nil {
 		fields = Fields{}
