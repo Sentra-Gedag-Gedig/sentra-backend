@@ -1,226 +1,174 @@
 # SentraPay 💰💳
 
-SentraPay is a comprehensive financial management platform built with Go that provides user authentication, budget management, identity verification, and digital wallet capabilities.
+SentraPay adalah platform manajemen keuangan komprehensif yang dibangun dengan Go yang menyediakan otentikasi pengguna, manajemen anggaran, verifikasi identitas, dan kemampuan dompet digital.
 
-## Features ✨
+## Fitur ✨
 
-### User Authentication 🔐
-- Registration with email/phone verification
-- Multi-factor authentication
-- Social login (Google OAuth)
-- Biometric authentication (Touch ID)
-- User profile management
+### Otentikasi Pengguna 🔐
+- Pendaftaran dengan verifikasi email/telepon
+- Otentikasi multi-faktor
+- Login sosial (Google OAuth)
+- Otentikasi biometrik (Touch ID)
+- Pengelolaan profil pengguna
 
-### Budget Management 📊
-- Income and expense tracking
-- Transaction categorization
-- Period-based financial reports
-- Audio notes for transactions
-- Customizable categories
+### Manajemen Anggaran 📊
+- Pelacakan pemasukan dan pengeluaran
+- Kategorisasi transaksi
+- Laporan keuangan berbasis periode
+- Catatan audio untuk transaksi
+- Kategori yang dapat disesuaikan
 
-### Identity Verification 🔐
-- KTP (ID card) detection and data extraction
-- Face recognition for authentication
-- QRIS code scanning
-- Currency recognition
+### Verifikasi Identitas 🔐
+- Deteksi KTP dan ekstraksi data
+- Pengenalan wajah untuk otentikasi
+- Pemindaian kode QRIS
+- Pengenalan mata uang
 
-### Digital Wallet 👛
-- Balance management
-- Virtual account creation via DOKU
-- Payment processing with callbacks
-- Transaction history
-- Secure fund transfers
+### Dompet Digital 👛
+- Pengelolaan saldo
+- Pembuatan akun virtual melalui DOKU
+- Pemrosesan pembayaran dengan callback
+- Riwayat transaksi
+- Transfer dana yang aman
 
-## Architecture 🏗️
+## Arsitektur 🏗️
 
-SentraPay follows a clean, modular architecture:
+SentraPay mengikuti arsitektur yang bersih dan modular:
 
-- **API Layer**: RESTful API built with Fiber framework
-- **Service Layer**: Core business logic implementation
-- **Repository Layer**: Data access patterns for persistence
-- **Infrastructure Layer**: External service integrations
+- **Lapisan API**: API RESTful yang dibangun dengan framework Fiber
+- **Lapisan Layanan**: Implementasi logika bisnis inti
+- **Lapisan Repositori**: Pola akses data untuk persistensi
+- **Lapisan Infrastruktur**: Integrasi layanan eksternal
 
 ## Tech Stack 🛠️
 
 - **Backend**: Go (Golang)
-- **Web Framework**: Fiber
+- **Framework Web**: Fiber
 - **Database**: PostgreSQL
 - **Caching**: Redis
-- **Storage**: AWS S3
-- **Messaging**: WhatsApp API
-- **AI Services**: Google Gemini for image analysis
+- **Penyimpanan**: AWS S3
+- **Perpesanan**: WhatsApp API
+- **Layanan AI**: Google Gemini untuk analisis gambar
 - **Payment Gateway**: DOKU API
 
-## Prerequisites ✅
+## Prasyarat ✅
 
 - Go 1.18+
 - PostgreSQL 13+
 - Redis 6+
-- AWS S3 credentials
-- DOKU payment gateway account
-- Google Cloud project for Gemini AI
-- WhatsApp integration for notifications
+- Kredensial AWS S3
+- Akun payment gateway DOKU
+- Proyek Google Cloud untuk Gemini AI
+- Integrasi WhatsApp untuk notifikasi
 
-## Environment Variables 🔧
+## Variabel Lingkungan 🔧
 
-Create a `.env` file in the root directory with the following variables:
+Buat file `.env` di direktori root dengan variabel berikut:
 
-```bash
-# Application
-APP_PORT=8080
-APP_ENV=development
+## Instalasi 📥
 
-# Database
-DB_HOST=localhost
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=yourpassword
-DB_NAME=sentrapay
-DB_SSLMODE=disable
-
-# Redis
-REDIS_ADDRESS=localhost:6379
-REDIS_PASSWORD=
-REDIS_DB=0
-
-# JWT
-JWT_ACCESS_TOKEN_SECRET=your-jwt-secret
-
-# AWS S3
-AWS_ACCESS_KEY_ID=your-access-key
-AWS_SECRET_ACCESS_KEY=your-secret-key
-AWS_REGION=ap-southeast-1
-AWS_BUCKET_NAME=sentrapay-files
-
-# DOKU Payment Gateway
-DOKU_CLIENT_ID=your-client-id
-DOKU_SECRET_KEY=your-secret-key
-DOKU_PUBLIC_KEY=your-public-key
-DOKU_IS_PRODUCTION=false
-
-# Google OAuth
-GOOGLE_CLIENT_ID=your-client-id
-GOOGLE_CLIENT_SECRET=your-client-secret
-GOOGLE_STATE=random-state-string
-
-# Gemini AI
-GEMINI_API_KEY=your-gemini-api-key
-GEMINI_MODEL_NAME=gemini-pro-vision
-
-# AI Services
-AI_FACE_DETECTION_URL=ws://face-detection-service:8000/api/v1/face/ws
-AI_KTP_DETECTION_URL=ws://ktp-service:8000/api/v1/ktp/ws
-AI_QRIS_DETECTION_URL=ws://qris-service:8001/api/v1/qris/ws
-
-# SMTP for email
-SMTP_MAIL=your-email@gmail.com
-SMTP_PASSWORD=your-app-password
-```
-
-## Installation 📥
-
-1. Clone the repository:
+1. Klon repositori:
    ```bash
-   git clone https://github.com/yourusername/sentrapay.git
-   cd sentrapay
+   git clone https://github.com/Sentra-Gedag-Gedig/sentra-backend
+   cd sentra-backend
    ```
 
-2. Install dependencies:
+2. Instal dependensi:
    ```bash
    go mod download
    ```
 
-3. Set up the database:
+3. Siapkan database:
    ```bash
-   # Run PostgreSQL migrations
+   # Jalankan migrasi PostgreSQL
    migrate -database "postgres://postgres:yourpassword@localhost:5432/sentrapay?sslmode=disable" -path database/migrations up
    ```
 
-4. Build the application:
+4. Build aplikasi:
    ```bash
    go build -o sentrapay ./cmd/app
    ```
 
-5. Run the application:
+5. Jalankan aplikasi:
    ```bash
    ./sentrapay
    ```
 
-## Docker Deployment 🐳
+## Deployment Docker 🐳
 
-You can also use Docker Compose to run the entire application stack:
+Anda juga dapat menggunakan Docker Compose untuk menjalankan seluruh stack aplikasi:
 
 ```bash
 docker-compose up -d
 ```
 
-This will start:
-- The main Go application
-- PostgreSQL database
-- Redis cache
-- Face detection service
-- KTP detection service
-- QRIS detection service
-- NGINX as a reverse proxy
+Ini akan memulai:
+- Aplikasi Go utama
+- Database PostgreSQL
+- Cache Redis
+- Layanan deteksi wajah
+- Layanan deteksi KTP
+- Layanan deteksi QRIS
+- NGINX sebagai reverse proxy
 
-## API Documentation 📘
+## Dokumentasi API 📘
 
-### Postman Collection
+### Koleksi Postman
 
-Access our complete API documentation and test endpoints using our Postman collection:
+Akses dokumentasi API lengkap kami dan uji endpoint menggunakan koleksi Postman kami:
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://braciate-backend.postman.co/workspace/My-Workspace~3c0895d0-8f47-45ff-8232-9471b36c8289/collection/32354585-ae5b5ec5-ccbf-46a0-b4a5-1375abc5d2e4?action=share&creator=32354585&active-environment=32354585-f992d894-dc2a-4b75-8494-aefe3fa343d9)
 
-## Project Structure 📂
+## Struktur Proyek 📂
 
 ```
 ProjectGolang/
-├── cmd/app/                  # Application entry point
-├── database/                 # Database migrations and config
-│   ├── migrations/           # SQL migration files
-│   └── postgres/             # PostgreSQL connection
-├── internal/                 # Internal application code
-│   ├── api/                  # API handlers and services
-│   │   ├── auth/             # Authentication module
-│   │   ├── budget_manager/   # Budget management module
-│   │   ├── detection/        # Detection services
-│   │   └── sentra_pay/       # Wallet and payments
-│   ├── config/               # Application configuration
-│   ├── entity/               # Domain entities
-│   └── middleware/           # HTTP middleware
-├── nginx/                    # NGINX configuration
-├── pkg/                      # Shared packages
-│   ├── bcrypt/               # Password hashing
-│   ├── context/              # Context utilities
-│   ├── doku/                 # DOKU payment gateway
+├── cmd/app/                  # Titik masuk aplikasi
+├── database/                 # Migrasi dan konfigurasi database
+│   ├── migrations/           # File migrasi SQL
+│   └── postgres/             # Koneksi PostgreSQL
+├── internal/                 # Kode aplikasi internal
+│   ├── api/                  # Handler dan layanan API
+│   │   ├── auth/             # Modul otentikasi
+│   │   ├── budget_manager/   # Modul manajemen anggaran
+│   │   ├── detection/        # Layanan deteksi
+│   │   └── sentra_pay/       # Dompet dan pembayaran
+│   ├── config/               # Konfigurasi aplikasi
+│   ├── entity/               # Entitas domain
+│   └── middleware/           # Middleware HTTP
+├── nginx/                    # Konfigurasi NGINX
+├── pkg/                      # Paket bersama
+│   ├── bcrypt/               # Hashing kata sandi
+│   ├── context/              # Utilitas konteks
+│   ├── doku/                 # Payment gateway DOKU
 │   ├── gemini/               # Google Gemini AI
 │   ├── google/               # Google OAuth
-│   ├── handlerUtil/          # Handler utilities
-│   ├── jwt/                  # JWT authentication
+│   ├── handlerUtil/          # Utilitas handler
+│   ├── jwt/                  # Otentikasi JWT
 │   ├── log/                  # Logging
-│   ├── redis/                # Redis client
-│   ├── response/             # HTTP response utilities
-│   ├── s3/                   # AWS S3 client
-│   ├── smtp/                 # Email sending
-│   ├── utils/                # General utilities
-│   ├── websocket/            # WebSocket utilities
-│   └── whatsapp/             # WhatsApp messaging
-└── .env                      # Environment variables
+│   ├── redis/                # Klien Redis
+│   ├── response/             # Utilitas respons HTTP
+│   ├── s3/                   # Klien AWS S3
+│   ├── smtp/                 # Pengiriman email
+│   ├── utils/                # Utilitas umum
+│   ├── websocket/            # Utilitas WebSocket
+│   └── whatsapp/             # Perpesanan WhatsApp
+└── .env                      # Variabel lingkungan
 ```
 
-## Contributing 🤝
+## Kontribusi 🤝
 
-1. Fork the repository
-2. Create your feature branch: `git checkout -b feature/my-feature`
-3. Commit your changes: `git commit -am 'Add my feature'`
-4. Push to the branch: `git push origin feature/my-feature`
-5. Submit a pull request
+1. Fork repositori
+2. Buat branch fitur Anda: `git checkout -b feature/fitur-saya`
+3. Commit perubahan Anda: `git commit -am 'Tambahkan fitur saya'`
+4. Push ke branch: `git push origin feature/fitur-saya`
+5. Kirim pull request
 
-## License 📝
+## Lisensi 📝
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+Proyek ini dilisensikan di bawah Lisensi MIT - lihat file LICENSE untuk detailnya.
 
-## Acknowledgments 🙏
+## Penghargaan 🙏
 
-- The Go Fiber team for their excellent web framework
-- All contributors to the open-source libraries used in this project
+- Tim Go Fiber untuk framework web mereka yang luar biasa
+- Semua kontributor pada pustaka open-source yang digunakan dalam proyek ini
