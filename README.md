@@ -2,6 +2,15 @@
 
 SentraPay adalah platform manajemen keuangan komprehensif yang dibangun dengan Go yang menyediakan otentikasi pengguna, manajemen anggaran, verifikasi identitas, dan kemampuan dompet digital.
 
+## Tim Pengembang ✨
+
+### Nama Tim: Gedag Gedig
+
+#### Anggota:
+- Richard (virgobulan05@student.ub.ac.id)
+- Jason Surya Wijaya (jasonsurya17@student.ub.ac.id)
+- Kadek Nandana Tyo Nayotama (nandanatyon@student.ub.ac.id)
+
 ## Fitur ✨
 
 ### Otentikasi Pengguna 🔐
@@ -61,16 +70,13 @@ SentraPay mengikuti arsitektur yang bersih dan modular:
 - Proyek Google Cloud untuk Gemini AI
 - Integrasi WhatsApp untuk notifikasi
 
-## Variabel Lingkungan 🔧
-
-Buat file `.env` di direktori root dengan variabel berikut:
 
 ## Instalasi 📥
 
 1. Klon repositori:
    ```bash
-   git clone https://github.com/Sentra-Gedag-Gedig/sentra-backend
-   cd sentra-backend
+   git clone [https://github.com/yourusername/sentrapay.git](https://github.com/Sentra-Gedag-Gedig/sentra-backend.git)
+   cd sentrapay
    ```
 
 2. Instal dependensi:
