@@ -1,5 +1,5 @@
 # SentraPay 💰💳
-![alt text](![Uploading Pitchdeck Sentra  Hackathon Find IT 2025.png…]()?raw=true)
+![alt text](https://github.com/user-attachments/assets/8ba32535-0d1f-4a96-a0ae-27a0ce0dd57a)?raw=true)
 
 SentraPay adalah platform manajemen keuangan komprehensif yang dibangun dengan Go yang menyediakan otentikasi pengguna, manajemen anggaran, verifikasi identitas, dan kemampuan dompet digital.
 
