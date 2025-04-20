@@ -1,6 +1,8 @@
 # Sentra 💰💳
 ![alt text](https://github.com/user-attachments/assets/8ba32535-0d1f-4a96-a0ae-27a0ce0dd57a)
 
+## Video demo: [click here](https://drive.google.com/file/d/1IWDSoMW17IsHJULY_u2drgrBiLGbBcXg/view)
+
 Sentra adalah platform manajemen keuangan komprehensif yang dibangun dengan Go yang menyediakan otentikasi pengguna, manajemen anggaran, verifikasi identitas, dan kemampuan dompet digital.
 
 ## Tim Pengembang ✨
@@ -76,8 +78,8 @@ SentraPay mengikuti arsitektur yang bersih dan modular:
 
 1. Klon repositori:
    ```bash
-   git clone [https://github.com/yourusername/sentrapay.git](https://github.com/Sentra-Gedag-Gedig/sentra-backend.git)
-   cd sentrapay
+   git clone https://github.com/Sentra-Gedag-Gedig/sentra-backend.git
+   cd sentra-backend
    ```
 
 2. Instal dependensi:
@@ -88,17 +90,17 @@ SentraPay mengikuti arsitektur yang bersih dan modular:
 3. Siapkan database:
    ```bash
    # Jalankan migrasi PostgreSQL
-   migrate -database "postgres://postgres:yourpassword@localhost:5432/sentrapay?sslmode=disable" -path database/migrations up
+   make migrate-up
    ```
 
 4. Build aplikasi:
    ```bash
-   go build -o sentrapay ./cmd/app
+   make build
    ```
 
 5. Jalankan aplikasi:
    ```bash
-   ./sentrapay
+   make run
    ```
 
 ## Deployment Docker 🐳
@@ -162,14 +164,6 @@ ProjectGolang/
 │   └── whatsapp/             # Perpesanan WhatsApp
 └── .env                      # Variabel lingkungan
 ```
-
-## Kontribusi 🤝
-
-1. Fork repositori
-2. Buat branch fitur Anda: `git checkout -b feature/fitur-saya`
-3. Commit perubahan Anda: `git commit -am 'Tambahkan fitur saya'`
-4. Push ke branch: `git push origin feature/fitur-saya`
-5. Kirim pull request
 
 ## Lisensi 📝
 
