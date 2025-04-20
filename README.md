@@ -1,9 +1,9 @@
 # Sentra 💰💳
 ![alt text](https://github.com/user-attachments/assets/8ba32535-0d1f-4a96-a0ae-27a0ce0dd57a)
 
-## Video demo: [click here](https://drive.google.com/file/d/1IWDSoMW17IsHJULY_u2drgrBiLGbBcXg/view)
-
 Sentra adalah platform manajemen keuangan komprehensif yang dibangun dengan Go yang menyediakan otentikasi pengguna, manajemen anggaran, verifikasi identitas, dan kemampuan dompet digital.
+
+Video demo: [click here](https://drive.google.com/file/d/1IWDSoMW17IsHJULY_u2drgrBiLGbBcXg/view)
 
 ## Tim Pengembang ✨
 
